@@ -3,76 +3,298 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Body Scan - WM Attire</title>
+    <title>3D Avatar Customization - WM Attire</title>
     <link rel="stylesheet" href="css/styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.11.0"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet@2.2.2"></script>
     <style>
-        .scan-container {
-            max-width: 900px;
-            margin: 2rem auto;
-            padding: 2rem;
+        /* Avatar Page Specific Styles */
+        .avatar-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
         }
-        .video-container {
-            position: relative;
-            width: 100%;
-            max-width: 640px;
-            margin: 0 auto;
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            background: var(--bg-light);
-        }
-        #video, #canvas {
-            width: 100%;
-            display: block;
-        }
-        #canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-        .scan-controls {
-            text-align: center;
-            margin-top: 2rem;
-        }
-        .measurements {
-            margin-top: 2rem;
-            padding: 2rem;
-            background: var(--white);
-            border-radius: var(--border-radius);
-            border: 2px solid var(--border-color);
-        }
-        .measurement-item {
+        
+        .avatar-container {
             display: flex;
-            justify-content: space-between;
-            padding: 0.75rem 0;
-            border-bottom: 1px solid var(--border-color);
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            gap: 2rem;
+            min-height: calc(100vh - 80px);
         }
-        .measurement-item:last-child {
-            border-bottom: none;
+        
+        /* Left Panel - Controls */
+        .control-panel {
+            width: 380px;
+            background: white;
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
         }
-        .status {
-            text-align: center;
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: var(--border-radius);
-            background: var(--bg-light);
-        }
-        .instructions {
-            background: var(--bg-light);
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
+        
+        .control-section {
             margin-bottom: 2rem;
         }
-        .instructions ol {
-            margin-left: 1.5rem;
+        
+        .section-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
         }
-        .instructions li {
+        
+        /* Gender Selection */
+        .gender-selection {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .gender-btn {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+            color: #6b7280;
+        }
+        
+        .gender-btn:hover {
+            border-color: #2563eb;
+            color: #2563eb;
+        }
+        
+        .gender-btn.active {
+            background: #2563eb;
+            border-color: #2563eb;
+            color: white;
+        }
+        
+        /* Clothing Options */
+        .clothing-option {
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: white;
+            font-weight: 500;
+        }
+        
+        .clothing-option:hover {
+            border-color: #2563eb;
+            background: #f0f7ff;
+        }
+        
+        .clothing-option.selected {
+            border-color: #2563eb;
+            background: #eff6ff;
+            color: #2563eb;
+        }
+        
+        /* Measurement Inputs */
+        .measurement-input {
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
+            background: white;
+        }
+        
+        .measurement-label {
+            display: block;
+            font-weight: 500;
+            color: #374151;
             margin-bottom: 0.5rem;
+        }
+        
+        .measurement-value {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        /* Color Picker */
+        .color-options {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+        
+        .color-swatch {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .color-swatch:hover {
+            transform: scale(1.1);
+        }
+        
+        .color-swatch.selected {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+        }
+        
+        /* Customize Button */
+        .customize-btn {
+            width: 100%;
+            padding: 1rem;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #374151;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s;
+        }
+        
+        .customize-btn:hover {
+            background: #f9fafb;
+            border-color: #2563eb;
+        }
+        
+        /* Right Panel - 3D Avatar Display */
+        .avatar-display {
+            flex: 1;
+            background: white;
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .avatar-header {
+            margin-bottom: 2rem;
+        }
+        
+        .avatar-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+        
+        .avatar-subtitle {
+            color: #6b7280;
+            font-size: 1rem;
+        }
+        
+        .avatar-viewport {
+            flex: 1;
+            background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 600px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .avatar-mockup {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: #9ca3af;
+        }
+        
+        .avatar-placeholder-icon {
+            width: 120px;
+            height: 120px;
+            background: #e5e7eb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 3rem;
+        }
+        
+        .avatar-placeholder-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .avatar-placeholder-subtext {
+            font-size: 0.875rem;
+            color: #9ca3af;
+        }
+        
+        /* Avatar Controls */
+        .avatar-controls {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .control-btn {
+            flex: 1;
+            padding: 0.875rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        
+        .control-btn:hover {
+            background: #f9fafb;
+        }
+        
+        .control-btn.primary {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+        
+        .control-btn.primary:hover {
+            background: var(--primary-hover);
+            border-color: var(--primary-hover);
+        }
+        
+        @media (max-width: 1024px) {
+            .avatar-container {
+                flex-direction: column;
+            }
+            
+            .control-panel {
+                width: 100%;
+                position: relative;
+                top: 0;
+            }
         }
     </style>
 </head>
-<body>
+<body class="avatar-page">
+    <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
             <img src="images/logo.svg" alt="WM Attire" class="logo">
@@ -90,247 +312,178 @@
         </div>
     </nav>
 
-    <div class="scan-container">
-        <h1 style="text-align: center; margin-bottom: 1rem;">Body Scan</h1>
-        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">Use your camera to capture your body measurements with AI</p>
+    <!-- Avatar Customization Container -->
+    <div class="avatar-container">
+        <!-- Left Panel - Controls -->
+        <div class="control-panel">
+            <!-- Gender Selection -->
+            <div class="control-section">
+                <h3 class="section-title">Select Gender</h3>
+                <div class="gender-selection">
+                    <button class="gender-btn active" onclick="selectGender('male')">Male</button>
+                    <button class="gender-btn" onclick="selectGender('female')">Female</button>
+                </div>
+            </div>
 
-        <div class="instructions">
-            <h3>Instructions:</h3>
-            <ol>
-                <li>Click "Start Camera" to begin</li>
-                <li>Stand 6-8 feet from your camera</li>
-                <li>Ensure your full body is visible in the frame</li>
-                <li>Stand in a T-pose with arms slightly extended</li>
-                <li>Click "Capture Measurements" when ready</li>
-            </ol>
+            <!-- Clothing Options -->
+            <div class="control-section">
+                <h3 class="section-title">Clothing</h3>
+                <div class="clothing-option selected" onclick="selectClothing('shirt')">
+                    Basic shirt
+                </div>
+                <div class="clothing-option" onclick="selectClothing('blazer')">
+                    Basic blazer
+                </div>
+                <div class="clothing-option" onclick="selectClothing('pants')">
+                    Basic pants
+                </div>
+            </div>
+
+            <!-- Color Selection -->
+            <div class="control-section">
+                <h3 class="section-title">Color</h3>
+                <div class="color-options">
+                    <div class="color-swatch selected" style="background: #ffffff" onclick="selectColor('#ffffff')"></div>
+                    <div class="color-swatch" style="background: #000000" onclick="selectColor('#000000')"></div>
+                    <div class="color-swatch" style="background: #2563eb" onclick="selectColor('#2563eb')"></div>
+                    <div class="color-swatch" style="background: #dc2626" onclick="selectColor('#dc2626')"></div>
+                    <div class="color-swatch" style="background: #16a34a" onclick="selectColor('#16a34a')"></div>
+                    <div class="color-swatch" style="background: #f59e0b" onclick="selectColor('#f59e0b')"></div>
+                    <div class="color-swatch" style="background: #8b5cf6" onclick="selectColor('#8b5cf6')"></div>
+                    <div class="color-swatch" style="background: #ec4899" onclick="selectColor('#ec4899')"></div>
+                    <div class="color-swatch" style="background: #6b7280" onclick="selectColor('#6b7280')"></div>
+                    <div class="color-swatch" style="background: #f3f4f6" onclick="selectColor('#f3f4f6')"></div>
+                </div>
+            </div>
+
+            <!-- Body Measurements -->
+            <div class="control-section">
+                <h3 class="section-title">Body Measurements</h3>
+                <div class="measurement-input">
+                    <label class="measurement-label">Bust</label>
+                    <input type="text" class="measurement-value" placeholder="e.g., 36 inches" />
+                </div>
+                <div class="measurement-input">
+                    <label class="measurement-label">Waist</label>
+                    <input type="text" class="measurement-value" placeholder="e.g., 30 inches" />
+                </div>
+                <div class="measurement-input">
+                    <label class="measurement-label">Hips</label>
+                    <input type="text" class="measurement-value" placeholder="e.g., 38 inches" />
+                </div>
+                <div class="measurement-input">
+                    <label class="measurement-label">Shoulders</label>
+                    <input type="text" class="measurement-value" placeholder="e.g., 16 inches" />
+                </div>
+                <div class="measurement-input">
+                    <label class="measurement-label">Height</label>
+                    <input type="text" class="measurement-value" placeholder="e.g., 5'8\"" />
+                </div>
+                <div class="measurement-input">
+                    <label class="measurement-label">Arm length</label>
+                    <input type="text" class="measurement-value" placeholder="e.g., 23 inches" />
+                </div>
+            </div>
+
+            <!-- Customize Button -->
+            <button class="customize-btn">
+                <span>Customize</span>
+                <span>→</span>
+            </button>
         </div>
 
-        <div class="status" id="status">Ready to start</div>
+        <!-- Right Panel - 3D Avatar Display -->
+        <div class="avatar-display">
+            <div class="avatar-header">
+                <h1 class="avatar-title">Your 3D Avatar</h1>
+                <p class="avatar-subtitle">Customize your avatar with detailed body measurements and try on clothing</p>
+            </div>
 
-        <div class="video-container">
-            <video id="video" autoplay playsinline></video>
-            <canvas id="canvas"></canvas>
-        </div>
+            <div class="avatar-viewport">
+                <div class="avatar-mockup">
+                    <div class="avatar-placeholder-icon">👤</div>
+                    <div class="avatar-placeholder-text">3D Avatar Preview</div>
+                    <div class="avatar-placeholder-subtext">Your customized avatar will appear here</div>
+                </div>
+            </div>
 
-        <div class="scan-controls">
-            <button id="startBtn" class="btn-primary btn-large">Start Camera</button>
-            <button id="captureBtn" class="btn-primary btn-large" style="display: none;">Capture Measurements</button>
-            <button id="retakeBtn" class="btn-secondary" style="display: none; margin-left: 1rem;">Retake</button>
-        </div>
-
-        <div id="measurementsDiv" style="display: none;">
-            <div class="measurements">
-                <h2 style="margin-bottom: 1.5rem;">Your Measurements</h2>
-                <div class="measurement-item">
-                    <span><strong>Height:</strong></span>
-                    <span id="height">-- cm</span>
-                </div>
-                <div class="measurement-item">
-                    <span><strong>Shoulder Width:</strong></span>
-                    <span id="shoulders">-- cm</span>
-                </div>
-                <div class="measurement-item">
-                    <span><strong>Chest:</strong></span>
-                    <span id="chest">-- cm</span>
-                </div>
-                <div class="measurement-item">
-                    <span><strong>Waist:</strong></span>
-                    <span id="waist">-- cm</span>
-                </div>
-                <div class="measurement-item">
-                    <span><strong>Hips:</strong></span>
-                    <span id="hips">-- cm</span>
-                </div>
-                <div class="measurement-item">
-                    <span><strong>Inseam:</strong></span>
-                    <span id="inseam">-- cm</span>
-                </div>
-                <div style="margin-top: 2rem; text-align: center;">
-                    <a href="demo.html" class="btn-primary btn-large">View Your 3D Avatar</a>
-                </div>
+            <div class="avatar-controls">
+                <button class="control-btn">Rotate</button>
+                <button class="control-btn">Reset View</button>
+                <button class="control-btn primary">Save Avatar</button>
             </div>
         </div>
     </div>
 
+    <!-- Footer -->
     <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>WM Attire</h4>
-                    <p>See how it fits before you buy</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Product</h4>
-                    <ul>
-                        <li><a href="how-it-works.html">How It Works</a></li>
-                        <li><a href="pricing.html">Pricing</a></li>
-                        <li><a href="demo.html">Demo</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Support</h4>
-                    <ul>
-                        <li><a href="faq.html">FAQ</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                        <li><a href="privacy.html">Privacy & Safety</a></li>
-                    </ul>
-                </div>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>WM Attire</h4>
+                <p>See how it fits before you buy</p>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 WM Attire. All rights reserved.</p>
+            <div class="footer-section">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="how-it-works.html">How It Works</a></li>
+                    <li><a href="pricing.html">Pricing</a></li>
+                    <li><a href="demo.html">Demo</a></li>
+                </ul>
             </div>
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="privacy.html">Privacy & Safety</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 WM Attire. All rights reserved.</p>
         </div>
     </footer>
 
     <script>
-        let video, canvas, ctx;
-        let poseNet;
-        let poses = [];
-        let stream;
-
-        const startBtn = document.getElementById('startBtn');
-        const captureBtn = document.getElementById('captureBtn');
-        const retakeBtn = document.getElementById('retakeBtn');
-        const status = document.getElementById('status');
-        const measurementsDiv = document.getElementById('measurementsDiv');
-
-        startBtn.addEventListener('click', startCamera);
-        captureBtn.addEventListener('click', captureMeasurements);
-        retakeBtn.addEventListener('click', retake);
-
-        async function startCamera() {
-            video = document.getElementById('video');
-            canvas = document.getElementById('canvas');
-            ctx = canvas.getContext('2d');
-
-            try {
-                status.textContent = 'Starting camera...';
-                stream = await navigator.mediaDevices.getUserMedia({
-                    video: { width: 640, height: 480 }
-                });
-                video.srcObject = stream;
-
-                video.addEventListener('loadeddata', async () => {
-                    canvas.width = video.videoWidth;
-                    canvas.height = video.videoHeight;
-
-                    status.textContent = 'Loading AI model...';
-                    poseNet = await posenet.load({
-                        architecture: 'MobileNetV1',
-                        outputStride: 16,
-                        multiplier: 0.75
-                    });
-
-                    status.textContent = 'Ready! Position yourself in the frame';
-                    startBtn.style.display = 'none';
-                    captureBtn.style.display = 'inline-block';
-                    detectPose();
-                });
-            } catch (error) {
-                status.textContent = 'Camera access denied. Please enable camera permissions.';
-                console.error('Error:', error);
-            }
-        }
-
-        async function detectPose() {
-            const pose = await poseNet.estimateSinglePose(video, {
-                flipHorizontal: false
+        // Gender Selection
+        function selectGender(gender) {
+            document.querySelectorAll('.gender-btn').forEach(btn => {
+                btn.classList.remove('active');
             });
-            poses = [pose];
-            drawKeypoints();
-            requestAnimationFrame(detectPose);
+            event.target.classList.add('active');
+            
+            // TODO: Update 3D avatar model based on gender
+            console.log('Gender selected:', gender);
         }
 
-        function drawKeypoints() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            if (poses.length > 0) {
-                const pose = poses[0];
-                pose.keypoints.forEach(keypoint => {
-                    if (keypoint.score > 0.5) {
-                        ctx.beginPath();
-                        ctx.arc(keypoint.position.x, keypoint.position.y, 5, 0, 2 * Math.PI);
-                        ctx.fillStyle = '#2563eb';
-                        ctx.fill();
-                    }
-                });
-
-                // Draw skeleton
-                drawSkeleton(pose.keypoints);
-            }
-        }
-
-        function drawSkeleton(keypoints) {
-            const adjacentKeyPoints = posenet.getAdjacentKeyPoints(keypoints, 0.5);
-            adjacentKeyPoints.forEach(([from, to]) => {
-                ctx.beginPath();
-                ctx.moveTo(from.position.x, from.position.y);
-                ctx.lineTo(to.position.x, to.position.y);
-                ctx.strokeStyle = '#2563eb';
-                ctx.lineWidth = 2;
-                ctx.stroke();
+        // Clothing Selection
+        function selectClothing(item) {
+            document.querySelectorAll('.clothing-option').forEach(opt => {
+                opt.classList.remove('selected');
             });
+            event.target.classList.add('selected');
+            
+            // TODO: Update 3D avatar clothing
+            console.log('Clothing selected:', item);
         }
 
-        function captureMeasurements() {
-            if (poses.length === 0) {
-                status.textContent = 'No pose detected. Please ensure you are visible in the frame.';
-                return;
-            }
-
-            status.textContent = 'Calculating measurements...';
-            const pose = poses[0];
-            const measurements = calculateMeasurements(pose.keypoints);
-
-            // Display measurements
-            document.getElementById('height').textContent = measurements.height + ' cm';
-            document.getElementById('shoulders').textContent = measurements.shoulders + ' cm';
-            document.getElementById('chest').textContent = measurements.chest + ' cm';
-            document.getElementById('waist').textContent = measurements.waist + ' cm';
-            document.getElementById('hips').textContent = measurements.hips + ' cm';
-            document.getElementById('inseam').textContent = measurements.inseam + ' cm';
-
-            measurementsDiv.style.display = 'block';
-            captureBtn.style.display = 'none';
-            retakeBtn.style.display = 'inline-block';
-            status.textContent = 'Measurements captured successfully!';
-
-            // Store in localStorage for demo page
-            localStorage.setItem('userMeasurements', JSON.stringify(measurements));
+        // Color Selection
+        function selectColor(color) {
+            document.querySelectorAll('.color-swatch').forEach(swatch => {
+                swatch.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+            
+            // TODO: Update clothing color on 3D avatar
+            console.log('Color selected:', color);
         }
 
-        function calculateMeasurements(keypoints) {
-            // Get key body points
-            const nose = keypoints[0];
-            const leftShoulder = keypoints[5];
-            const rightShoulder = keypoints[6];
-            const leftHip = keypoints[11];
-            const rightHip = keypoints[12];
-            const leftAnkle = keypoints[15];
-            const rightAnkle = keypoints[16];
-
-            // Calculate pixel to cm ratio (assuming average height)
-            const pixelHeight = Math.abs(nose.position.y - ((leftAnkle.position.y + rightAnkle.position.y) / 2));
-            const pixelToCm = 170 / pixelHeight; // Assuming 170cm average height
-
-            // Calculate measurements
-            const height = Math.round(pixelHeight * pixelToCm);
-            const shoulders = Math.round(Math.abs(leftShoulder.position.x - rightShoulder.position.x) * pixelToCm);
-            const chest = Math.round(shoulders * 1.8); // Estimate
-            const waist = Math.round(Math.abs(leftHip.position.x - rightHip.position.x) * pixelToCm * 1.6);
-            const hips = Math.round(Math.abs(leftHip.position.x - rightHip.position.x) * pixelToCm * 2);
-            const hipToAnkle = Math.abs(leftHip.position.y - leftAnkle.position.y);
-            const inseam = Math.round(hipToAnkle * pixelToCm * 0.75);
-
-            return { height, shoulders, chest, waist, hips, inseam };
-        }
-
-        function retake() {
-            measurementsDiv.style.display = 'none';
-            captureBtn.style.display = 'inline-block';
-            retakeBtn.style.display = 'none';
-            status.textContent = 'Ready! Position yourself in the frame';
-        }
+        // Note: This is a UI mockup. Full 3D avatar functionality requires:
+        // - Three.js or Babylon.js for 3D rendering
+        // - 3D body models (male/female)
+        // - Morphing system for body measurements
+        // - Clothing mesh system
+        // - Physics/cloth simulation
     </script>
 </body>
 </html>
