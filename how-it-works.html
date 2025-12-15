@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How It Works - WM Attire</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .how-it-works-hero {
+            text-align: center;
+            padding: 6rem 2rem 4rem;
+            background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+        }
+        
+        .how-hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: #111827;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+        }
+        
+        .how-hero-subtitle {
+            font-size: 1.5rem;
+            color: #6b7280;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* Steps Section */
+        .steps-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        .step-card {
+            background: white;
+            border-radius: 24px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .step-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .step-card.reverse {
+            flex-direction: row-reverse;
+        }
+        
+        .step-number {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1d4ed8 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 800;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 1rem;
+        }
+        
+        .step-description {
+            font-size: 1.125rem;
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .step-features {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .feature-badge {
+            background: #eff6ff;
+            color: var(--primary-color);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .step-visual {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            flex-shrink: 0;
+        }
+        
+        /* CTA Section */
+        .how-cta {
+            text-align: center;
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1d4ed8 100%);
+            color: white;
+        }
+        
+        .how-cta-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .how-cta-subtitle {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background: white;
+            color: var(--primary-color);
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        @media (max-width: 768px) {
+            .how-hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .step-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .step-card.reverse {
+                flex-direction: column;
+            }
+            
+            .step-visual {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <img src="images/logo.svg" alt="WM Attire" class="logo">
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="how-it-works.html" class="active">How It Works</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="demo.html">Demo</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+            </ul>
+            <div class="nav-buttons">
+                <a href="#" class="btn-text">Sign In</a>
+                <a href="scan.html" class="btn-primary">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="how-it-works-hero">
+        <h1 class="how-hero-title">How It Works</h1>
+        <p class="how-hero-subtitle">Four simple steps to find your perfect fit</p>
+    </section>
+
+    <!-- Steps Section -->
+    <section class="steps-section">
+        <!-- Step 1 -->
+        <div class="step-card">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <h2 class="step-title">Scan Your Body</h2>
+                <p class="step-description">Use your phone camera to create an accurate 3D model. Our AI captures your measurements in seconds.</p>
+                <div class="step-features">
+                    <span class="feature-badge">Quick & Easy</span>
+                    <span class="feature-badge">Privacy-First</span>
+                    <span class="feature-badge">No Special Equipment</span>
+                </div>
+            </div>
+            <div class="step-visual">📱</div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step-card reverse">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <h2 class="step-title">Create Your Avatar</h2>
+                <p class="step-description">Watch as we generate your personalized 3D avatar with accurate body proportions and measurements.</p>
+                <div class="step-features">
+                    <span class="feature-badge">3D Model</span>
+                    <span class="feature-badge">Accurate Sizing</span>
+                    <span class="feature-badge">Real-time Preview</span>
+                </div>
+            </div>
+            <div class="step-visual">👤</div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step-card">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                <h2 class="step-title">Try On Clothes</h2>
+                <p class="step-description">Browse any brand and see how clothes fit on your avatar before buying. Rotate, zoom, and check from every angle.</p>
+                <div class="step-features">
+                    <span class="feature-badge">All Brands</span>
+                    <span class="feature-badge">360° View</span>
+                    <span class="feature-badge">Mix & Match</span>
+                </div>
+            </div>
+            <div class="step-visual">👔</div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="step-card reverse">
+            <div class="step-number">4</div>
+            <div class="step-content">
+                <h2 class="step-title">Shop with Confidence</h2>
+                <p class="step-description">Get personalized size recommendations and see fit zones. Know exactly what to order every time.</p>
+                <div class="step-features">
+                    <span class="feature-badge">Size Recommendations</span>
+                    <span class="feature-badge">Fit Analysis</span>
+                    <span class="feature-badge">Zero Returns</span>
+                </div>
+            </div>
+            <div class="step-visual">✅</div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="how-cta">
+        <h2 class="how-cta-title">Ready to Try It?</h2>
+        <p class="how-cta-subtitle">Create your avatar in under 2 minutes</p>
+        <a href="scan.html" class="cta-button">Get Started Free</a>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>WM Attire</h4>
+                <p>See how it fits before you buy</p>
+            </div>
+            <div class="footer-section">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="how-it-works.html">How It Works</a></li>
+                    <li><a href="pricing.html">Pricing</a></li>
+                    <li><a href="demo.html">Demo</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="privacy.html">Privacy & Safety</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 WM Attire. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
