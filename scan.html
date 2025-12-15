@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Body Scan - WM Attire</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.11.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet@2.2.2"></script>
+    <style>
+        .scan-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 640px;
+            margin: 0 auto;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            background: var(--bg-light);
+        }
+        #video, #canvas {
+            width: 100%;
+            display: block;
+        }
+        #canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .scan-controls {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        .measurements {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: var(--white);
+            border-radius: var(--border-radius);
+            border: 2px solid var(--border-color);
+        }
+        .measurement-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .measurement-item:last-child {
+            border-bottom: none;
+        }
+        .status {
+            text-align: center;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: var(--border-radius);
+            background: var(--bg-light);
+        }
+        .instructions {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+        }
+        .instructions ol {
+            margin-left: 1.5rem;
+        }
+        .instructions li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">WM Attire</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="how-it-works.html">How It Works</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="demo.html">Demo</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+            </ul>
+            <div class="nav-buttons">
+                <a href="#" class="btn-text">Sign In</a>
+                <a href="#" class="btn-primary">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="scan-container">
+        <h1 style="text-align: center; margin-bottom: 1rem;">Body Scan</h1>
+        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">Use your camera to capture your body measurements with AI</p>
+
+        <div class="instructions">
+            <h3>Instructions:</h3>
+            <ol>
+                <li>Click "Start Camera" to begin</li>
+                <li>Stand 6-8 feet from your camera</li>
+                <li>Ensure your full body is visible in the frame</li>
+                <li>Stand in a T-pose with arms slightly extended</li>
+                <li>Click "Capture Measurements" when ready</li>
+            </ol>
+        </div>
+
+        <div class="status" id="status">Ready to start</div>
+
+        <div class="video-container">
+            <video id="video" autoplay playsinline></video>
+            <canvas id="canvas"></canvas>
+        </div>
+
+        <div class="scan-controls">
+            <button id="startBtn" class="btn-primary btn-large">Start Camera</button>
+            <button id="captureBtn" class="btn-primary btn-large" style="display: none;">Capture Measurements</button>
+            <button id="retakeBtn" class="btn-secondary" style="display: none; margin-left: 1rem;">Retake</button>
+        </div>
+
+        <div id="measurementsDiv" style="display: none;">
+            <div class="measurements">
+                <h2 style="margin-bottom: 1.5rem;">Your Measurements</h2>
+                <div class="measurement-item">
+                    <span><strong>Height:</strong></span>
+                    <span id="height">-- cm</span>
+                </div>
+                <div class="measurement-item">
+                    <span><strong>Shoulder Width:</strong></span>
+                    <span id="shoulders">-- cm</span>
+                </div>
+                <div class="measurement-item">
+                    <span><strong>Chest:</strong></span>
+                    <span id="chest">-- cm</span>
+                </div>
+                <div class="measurement-item">
+                    <span><strong>Waist:</strong></span>
+                    <span id="waist">-- cm</span>
+                </div>
+                <div class="measurement-item">
+                    <span><strong>Hips:</strong></span>
+                    <span id="hips">-- cm</span>
+                </div>
+                <div class="measurement-item">
+                    <span><strong>Inseam:</strong></span>
+                    <span id="inseam">-- cm</span>
+                </div>
+                <div style="margin-top: 2rem; text-align: center;">
+                    <a href="demo.html" class="btn-primary btn-large">View Your 3D Avatar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>WM Attire</h4>
+                    <p>See how it fits before you buy</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="how-it-works.html">How It Works</a></li>
+                        <li><a href="pricing.html">Pricing</a></li>
+                        <li><a href="demo.html">Demo</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="privacy.html">Privacy & Safety</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 WM Attire. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let video, canvas, ctx;
+        let poseNet;
+        let poses = [];
+        let stream;
+
+        const startBtn = document.getElementById('startBtn');
+        const captureBtn = document.getElementById('captureBtn');
+        const retakeBtn = document.getElementById('retakeBtn');
+        const status = document.getElementById('status');
+        const measurementsDiv = document.getElementById('measurementsDiv');
+
+        startBtn.addEventListener('click', startCamera);
+        captureBtn.addEventListener('click', captureMeasurements);
+        retakeBtn.addEventListener('click', retake);
+
+        async function startCamera() {
+            video = document.getElementById('video');
+            canvas = document.getElementById('canvas');
+            ctx = canvas.getContext('2d');
+
+            try {
+                status.textContent = 'Starting camera...';
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: { width: 640, height: 480 }
+                });
+                video.srcObject = stream;
+
+                video.addEventListener('loadeddata', async () => {
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+
+                    status.textContent = 'Loading AI model...';
+                    poseNet = await posenet.load({
+                        architecture: 'MobileNetV1',
+                        outputStride: 16,
+                        multiplier: 0.75
+                    });
+
+                    status.textContent = 'Ready! Position yourself in the frame';
+                    startBtn.style.display = 'none';
+                    captureBtn.style.display = 'inline-block';
+                    detectPose();
+                });
+            } catch (error) {
+                status.textContent = 'Camera access denied. Please enable camera permissions.';
+                console.error('Error:', error);
+            }
+        }
+
+        async function detectPose() {
+            const pose = await poseNet.estimateSinglePose(video, {
+                flipHorizontal: false
+            });
+            poses = [pose];
+            drawKeypoints();
+            requestAnimationFrame(detectPose);
+        }
+
+        function drawKeypoints() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (poses.length > 0) {
+                const pose = poses[0];
+                pose.keypoints.forEach(keypoint => {
+                    if (keypoint.score > 0.5) {
+                        ctx.beginPath();
+                        ctx.arc(keypoint.position.x, keypoint.position.y, 5, 0, 2 * Math.PI);
+                        ctx.fillStyle = '#2563eb';
+                        ctx.fill();
+                    }
+                });
+
+                // Draw skeleton
+                drawSkeleton(pose.keypoints);
+            }
+        }
+
+        function drawSkeleton(keypoints) {
+            const adjacentKeyPoints = posenet.getAdjacentKeyPoints(keypoints, 0.5);
+            adjacentKeyPoints.forEach(([from, to]) => {
+                ctx.beginPath();
+                ctx.moveTo(from.position.x, from.position.y);
+                ctx.lineTo(to.position.x, to.position.y);
+                ctx.strokeStyle = '#2563eb';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            });
+        }
+
+        function captureMeasurements() {
+            if (poses.length === 0) {
+                status.textContent = 'No pose detected. Please ensure you are visible in the frame.';
+                return;
+            }
+
+            status.textContent = 'Calculating measurements...';
+            const pose = poses[0];
+            const measurements = calculateMeasurements(pose.keypoints);
+
+            // Display measurements
+            document.getElementById('height').textContent = measurements.height + ' cm';
+            document.getElementById('shoulders').textContent = measurements.shoulders + ' cm';
+            document.getElementById('chest').textContent = measurements.chest + ' cm';
+            document.getElementById('waist').textContent = measurements.waist + ' cm';
+            document.getElementById('hips').textContent = measurements.hips + ' cm';
+            document.getElementById('inseam').textContent = measurements.inseam + ' cm';
+
+            measurementsDiv.style.display = 'block';
+            captureBtn.style.display = 'none';
+            retakeBtn.style.display = 'inline-block';
+            status.textContent = 'Measurements captured successfully!';
+
+            // Store in localStorage for demo page
+            localStorage.setItem('userMeasurements', JSON.stringify(measurements));
+        }
+
+        function calculateMeasurements(keypoints) {
+            // Get key body points
+            const nose = keypoints[0];
+            const leftShoulder = keypoints[5];
+            const rightShoulder = keypoints[6];
+            const leftHip = keypoints[11];
+            const rightHip = keypoints[12];
+            const leftAnkle = keypoints[15];
+            const rightAnkle = keypoints[16];
+
+            // Calculate pixel to cm ratio (assuming average height)
+            const pixelHeight = Math.abs(nose.position.y - ((leftAnkle.position.y + rightAnkle.position.y) / 2));
+            const pixelToCm = 170 / pixelHeight; // Assuming 170cm average height
+
+            // Calculate measurements
+            const height = Math.round(pixelHeight * pixelToCm);
+            const shoulders = Math.round(Math.abs(leftShoulder.position.x - rightShoulder.position.x) * pixelToCm);
+            const chest = Math.round(shoulders * 1.8); // Estimate
+            const waist = Math.round(Math.abs(leftHip.position.x - rightHip.position.x) * pixelToCm * 1.6);
+            const hips = Math.round(Math.abs(leftHip.position.x - rightHip.position.x) * pixelToCm * 2);
+            const hipToAnkle = Math.abs(leftHip.position.y - leftAnkle.position.y);
+            const inseam = Math.round(hipToAnkle * pixelToCm * 0.75);
+
+            return { height, shoulders, chest, waist, hips, inseam };
+        }
+
+        function retake() {
+            measurementsDiv.style.display = 'none';
+            captureBtn.style.display = 'inline-block';
+            retakeBtn.style.display = 'none';
+            status.textContent = 'Ready! Position yourself in the frame';
+        }
+    </script>
+</body>
+</html>
