@@ -74,6 +74,7 @@ class WMAssistant {
         
         this.isInitialized = true;
         this.startAnimation();
+                container.classList.add('visible');
     }
     
     startAnimation() {
