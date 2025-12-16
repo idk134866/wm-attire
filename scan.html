@@ -316,6 +316,34 @@
     <div class="avatar-container">
         <!-- Left Panel - Controls -->
         <div class="control-panel">
+
+                    <!-- Body Scan Camera Section -->
+        <div class="scan-camera-section">
+            <div class="scan-container">
+                <h2>Scan Your Body</h2>
+                <p class="scan-subtitle">Use your camera to create an accurate 3D avatar</p>
+                
+                <div class="camera-container">
+                    <video id="cameraVideo" autoplay playsinline></video>
+                    <canvas id="scanCanvas" style="display: none;"></canvas>
+                    <div class="scan-overlay">
+                        <div class="scan-frame"></div>
+                        <p class="scan-instruction">Position yourself in the frame</p>
+                    </div>
+                </div>
+
+                <div class="scan-controls">
+                    <button class="btn-primary" id="startScanBtn">📸 Start Body Scan</button>
+                    <button class="btn-secondary" id="captureScanBtn" style="display: none;">✓ Capture Scan</button>
+                    <button class="btn-secondary" id="skipScanBtn">Skip to Manual Entry</button>
+                </div>
+
+                <div class="scan-status" id="scanStatus" style="display: none;">
+                    <p>Scanning... Please hold still</p>
+                </div>
+            </div>
+        </div>
+
             <!-- Gender Selection -->
             <div class="control-section">
                 <h3 class="section-title">Select Gender</h3>
