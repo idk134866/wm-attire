@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Outfit Builder - WM Attire</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="images/logo.svg" alt="WM Attire">
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="how-it-works.html">How It Works</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="demo.html">Demo</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="#" class="nav-cta">Sign In</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-small">
+        <div class="container">
+            <h1>Smart Outfit Builder</h1>
+            <p class="subtitle">Let AI curate perfect outfits within your budget</p>
+        </div>
+    </section>
+
+    <!-- Outfit Builder Tool -->
+    <section class="section">
+        <div class="container">
+            <div class="outfit-builder-card">
+                <h2>Build Your Perfect Outfit</h2>
+                <p>Enter your preferences and let our AI suggest complete outfits that match your style and budget.</p>
+                
+                <!-- Budget Input -->
+                <div class="builder-input-group">
+                    <label for="budget">Your Budget</label>
+                    <div class="budget-input">
+                        <span class="currency">$</span>
+                        <input type="number" id="budget" placeholder="100" min="0" step="10">
+                    </div>
+                    <p class="input-help">We'll find outfits within this price range</p>
+                </div>
+
+                <!-- Occasion Selector -->
+                <div class="builder-input-group">
+                    <label>Occasion</label>
+                    <div class="occasion-grid">
+                        <button class="occasion-btn" data-occasion="casual">🚶 Casual</button>
+                        <button class="occasion-btn" data-occasion="business">💼 Business</button>
+                        <button class="occasion-btn" data-occasion="formal">👔 Formal</button>
+                        <button class="occasion-btn" data-occasion="athletic">⚽ Athletic</button>
+                        <button class="occasion-btn" data-occasion="evening">🌙 Evening</button>
+                        <button class="occasion-btn" data-occasion="date">❤️ Date Night</button>
+                    </div>
+                </div>
+
+                <!-- Style Preferences -->
+                <div class="builder-input-group">
+                    <label>Style Preferences (Optional)</label>
+                    <div class="style-tags">
+                        <button class="style-tag">Minimalist</button>
+                        <button class="style-tag">Trendy</button>
+                        <button class="style-tag">Classic</button>
+                        <button class="style-tag">Streetwear</button>
+                        <button class="style-tag">Preppy</button>
+                        <button class="style-tag">Bohemian</button>
+                    </div>
+                </div>
+
+                <!-- Generate Button -->
+                <button class="btn-primary btn-large">✨ Generate Outfit Ideas</button>
+            </div>
+
+            <!-- Results Section (Hidden initially) -->
+            <div class="outfit-results" style="display: none;">
+                <h2>Your Personalized Outfits</h2>
+                <div class="outfit-grid">
+                    <!-- Outfit Card 1 -->
+                    <div class="outfit-card">
+                        <div class="outfit-image-placeholder">
+                            <span>👕</span>
+                        </div>
+                        <h3>Casual Weekend Look</h3>
+                        <p class="outfit-price">$85.00</p>
+                        <ul class="outfit-items">
+                            <li>Navy Cotton T-Shirt</li>
+                            <li>Dark Wash Jeans</li>
+                            <li>White Sneakers</li>
+                        </ul>
+                        <button class="btn-secondary">View Details</button>
+                    </div>
+
+                    <!-- Outfit Card 2 -->
+                    <div class="outfit-card">
+                        <div class="outfit-image-placeholder">
+                            <span>👔</span>
+                        </div>
+                        <h3>Smart Casual Office</h3>
+                        <p class="outfit-price">$125.00</p>
+                        <ul class="outfit-items">
+                            <li>Oxford Button-Down Shirt</li>
+                            <li>Chino Pants</li>
+                            <li>Leather Loafers</li>
+                        </ul>
+                        <button class="btn-secondary">View Details</button>
+                    </div>
+
+                    <!-- Outfit Card 3 -->
+                    <div class="outfit-card">
+                        <div class="outfit-image-placeholder">
+                            <span>🧥</span>
+                        </div>
+                        <h3>Layered Street Style</h3>
+                        <p class="outfit-price">$95.00</p>
+                        <ul class="outfit-items">
+                            <li>Hoodie</li>
+                            <li>Denim Jacket</li>
+                            <li>Joggers</li>
+                            <li>High-Top Sneakers</li>
+                        </ul>
+                        <button class="btn-secondary">View Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- How It Works -->
+            <div class="builder-info">
+                <h2>How the AI Outfit Builder Works</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-icon">💰</div>
+                        <h3>Budget Optimization</h3>
+                        <p>Our AI finds the best value pieces within your price range</p>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🎯</div>
+                        <h3>Occasion Matching</h3>
+                        <p>Outfits perfectly suited for your specific needs</p>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🎨</div>
+                        <h3>Style Coordination</h3>
+                        <p>Colors, patterns, and fits that work together harmoniously</p>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">📊</div>
+                        <h3>Personalized Recommendations</h3>
+                        <p>Based on your body measurements and style preferences</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to Build Your Wardrobe?</h2>
+            <p>Create your avatar and get personalized outfit suggestions today</p>
+            <a href="scan.html" class="btn-primary btn-large">Create Your Avatar</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>WM Attire</h4>
+                    <p>See how it fits before you buy</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="how-it-works.html">How It Works</a></li>
+                        <li><a href="pricing.html">Pricing</a></li>
+                        <li><a href="demo.html">Demo</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="privacy.html">Privacy & Safety</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 WM Attire. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/ai-assistant.js"></script>
+</body>
+</html>
